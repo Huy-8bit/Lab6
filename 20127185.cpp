@@ -111,7 +111,19 @@ Node *insertNode(Node *N, info Data)
 
     return N;
 }
-
+void addkeys(Node *N)
+{
+    string key;
+    string value;
+    cout << "Enter new keys:";
+    cin >> key;
+    cout << "Enter new values:";
+    getline(cin, value);
+    info data;
+    data.Keys = key;
+    data.Values = value;
+    N = insertNode(N, data);
+}
 Node *minValueNode(Node *N)
 {
     Node *p = N;
@@ -332,7 +344,53 @@ void addNewKeys(Node *N)
     N = insertNode(N, D);
     cout << "Successfully added...\n";
 }
-
+void delAWord(Node *N)
+{
+    string key;
+    cout << "Enter a word to delete: ";
+    getline(cin, key);
+    N = deleteNode(N, key);
+    if (N == NULL)
+    {
+        cout << "Can't find the word.\n";
+        return;
+    }
+    cout << "Successfully deleted...\n";
+}
+void editValues(Node *N)
+{
+    string key;
+    Node *result;
+    cout << "Enter a word to edit Values: ";
+    getline(cin, key);
+    if (key[0] >= 'a' && key[0] <= 'z')
+        key[0] -= 32;
+    result = find(N, key);
+    if (result == NULL)
+        cout << "Can't find the word.\n";
+    else
+    {
+        cout << result->Data.Keys + ": " + result->Data.Values + '\n';
+        cout << "Enter new Values for editing: ";
+        getline(cin, key);
+        result->Data.Values = key;
+        cout << result->Data.Keys + ": " + result->Data.Values + "\n";
+    }
+}
+void outputTree(Node *N, fstream &f)
+{
+    if (N == NULL)
+        return;
+    outputTree(N->left, f);
+    f << N->Data.Keys + "  " + N->Data.Values + "\n\n";
+    outputTree(N->right, f);
+}
+void save(Node *N)
+{
+    fstream fs;
+    fs.open("fileSave.txt", ios::out);
+    outputTree(N, fs);
+}
 void selection(Node *N)
 {
     load(N);
@@ -343,15 +401,33 @@ void selection(Node *N)
     {
         system("cls");
         cout << "1. Search" << endl;
+        cout << "2. delete" << endl;
+        cout << "3. edit" << endl;
+        cout << "4. add" << endl;
         cout << "0. Exit" << endl;
         cout << "Your choice: ";
         cin >> temp;
         cin.ignore();
         cout << endl;
-
-        if (temp = 1)
+        if (temp == 0)
+        {
+            break;
+        }
+        else if (temp == 1)
         {
             search(N);
+        }
+        else if (temp == 2)
+        {
+            delAWord(N);
+        }
+        else if (temp == 3)
+        {
+            editValues(N);
+        }
+        else if (temp == 4)
+        {
+            addkeys(N);
         }
         system("pause");
     }
