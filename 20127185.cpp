@@ -1252,7 +1252,7 @@ void AVLTree()
 }
 int main()
 {
-    //system("color 80");
+    system("color 80");
     cout << "RUN..." << endl;
     srand(time(NULL));
     int Select = 0;
