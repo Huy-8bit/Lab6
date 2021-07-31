@@ -4,8 +4,8 @@
 #include <cstdlib>
 #include <sstream>
 #include <fstream>
-#include <windows.h>
 using namespace std;
+
 #define sizeTable 12000
 int random(int size)
 {
@@ -13,8 +13,8 @@ int random(int size)
 }
 struct info
 {
-    string keys;
-    string value;
+    string Keys;
+    string Value;
 };
 int sizeFileInput(fstream &fsInFile)
 {
@@ -23,35 +23,32 @@ int sizeFileInput(fstream &fsInFile)
     {
         string temp;
         getline(fsInFile, temp);
-        if (temp.length() > 1)
-        {
-            size++;
-        }
+        size++;
     }
     return size;
 }
 void input(fstream &fsInFile)
 {
-    fstream fsTest("keys.txt", ios::in);
+    fstream fsTest("Keys.txt", ios::in);
     int size = sizeFileInput(fsTest);
     fsTest.close();
     if (size < 10)
     {
-        fstream fs1("keys.txt", ios::out);
-        fstream fs2("value.txt", ios::out);
+        fstream fs1("Keys.txt", ios::out);
+        fstream fs2("Value.txt", ios::out);
         while (!fsInFile.eof())
         {
             string line;
             getline(fsInFile, line);
             if (line.size() > 3)
             {
-                string keys;
-                string value;
+                string Keys;
+                string Value;
                 stringstream ss(line);
-                getline(ss, keys, ' ');
-                getline(ss, value, '\n');
-                fs1 << keys << endl;
-                fs2 << value << endl;
+                getline(ss, Keys, ' ');
+                getline(ss, Value, '\n');
+                fs1 << Keys << endl;
+                fs2 << Value << endl;
             }
         }
 
@@ -68,7 +65,7 @@ int binarySearch(info *arr, int l, int r, string x)
     if (r >= l)
     {
         int mid = l + (r - l) / 2;
-        if (arr[mid].keys == x)
+        if (arr[mid].Keys == x)
         {
             fsTime << "binarySearch ";
             end = clock();
@@ -77,7 +74,7 @@ int binarySearch(info *arr, int l, int r, string x)
             fsTime.close();
             return mid;
         }
-        else if (arr[mid].keys > x)
+        else if (arr[mid].Keys > x)
         {
             return binarySearch(arr, l, mid - 1, x);
         }
@@ -98,17 +95,17 @@ info *insertionSort(info *arr, int n)
     start = clock();
     cout << "Loading..." << endl;
     int i, j;
-    string keys;
+    string Keys;
     for (i = 1; i < n; i++)
     {
-        keys = arr[i].keys;
+        Keys = arr[i].Keys;
         j = i - 1;
-        while (j >= 0 && arr[j].keys > keys)
+        while (j >= 0 && arr[j].Keys > Keys)
         {
             swap(arr[j], arr[j + 1]);
             j = j - 1;
         }
-        arr[j + 1].keys = keys;
+        arr[j + 1].Keys = Keys;
     }
     end = clock();
     double duration = (double)(end - start);
@@ -118,7 +115,7 @@ info *insertionSort(info *arr, int n)
 }
 void search(info *arr, int size)
 {
-    cout << " Enter keys search :";
+    cout << " Enter Keys search :";
     string x;
     cin >> x;
     int temp = binarySearch(arr, 0, size - 1, x);
@@ -127,8 +124,8 @@ void search(info *arr, int size)
     fs3 << x << " : ";
     if (temp > 0)
     {
-        cout << arr[temp].value << endl;
-        fs3 << arr[temp].value << endl;
+        cout << arr[temp].Value << endl;
+        fs3 << arr[temp].Value << endl;
     }
     else
     {
@@ -139,24 +136,24 @@ void search(info *arr, int size)
 }
 void saveFileArray(info *arrFinal, int &size)
 {
-    ofstream ofs1("keys.txt", std::ofstream::out);
+    ofstream ofs1("Keys.txt", std::ofstream::out);
     ofs1.close();
-    ofstream ofs2("value.txt", std::ofstream::out);
+    ofstream ofs2("Value.txt", std::ofstream::out);
     ofs2.close();
-    fstream fs1("keys.txt", ios::out);
-    fstream fs2("value.txt", ios::out);
+    fstream fs1("Keys.txt", ios::out);
+    fstream fs2("Value.txt", ios::out);
     for (int i = 0; i < size; i++)
     {
-        fs1 << arrFinal[i].keys << endl;
-        fs2 << arrFinal[i].value << endl;
+        fs1 << arrFinal[i].Keys << endl;
+        fs2 << arrFinal[i].Value << endl;
     }
     fs1.close();
     fs2.close();
 }
 info *inputArr(info *arr, int size)
 {
-    fstream fs1("keys.txt", ios::in);
-    fstream fs2("value.txt", ios::in);
+    fstream fs1("Keys.txt", ios::in);
+    fstream fs2("Value.txt", ios::in);
     int i = 0;
     while (!fs1.eof())
     {
@@ -166,8 +163,8 @@ info *inputArr(info *arr, int size)
         getline(fs2, temp2);
         if (temp1.length() > 0)
         {
-            arr[i].keys = temp1;
-            arr[i].value = temp2;
+            arr[i].Keys = temp1;
+            arr[i].Value = temp2;
             i++;
         }
     }
@@ -185,14 +182,14 @@ void addData()
     cout << " ADD Data" << endl;
     string temp1;
     string temp2;
-    cout << " Enter keys: ";
+    cout << " Enter Keys: ";
     cin.ignore();
     getline(cin, temp1);
-    cout << "Enter value: ";
+    cout << "Enter Value: ";
     getline(cin, temp2);
     cout << endl;
-    fstream fs1("keys.txt", ios::out | ios::app);
-    fstream fs2("value.txt", ios::in | ios::app);
+    fstream fs1("Keys.txt", ios::out | ios::app);
+    fstream fs2("Value.txt", ios::in | ios::app);
     fs1 << temp1 << endl;
     fs2 << temp2 << endl;
     fs3 << temp1 << " : " << temp2 << endl;
@@ -207,8 +204,8 @@ void deleteData()
     cout << " Deleted Data " << endl;
     fs3 << " Deleted Data " << endl;
     string temp1;
-    fstream fs("keys.txt", ios::in);
-    cout << " Enter keys: ";
+    fstream fs("Keys.txt", ios::in);
+    cout << " Enter Keys: ";
     size = sizeFileInput(fs);
     cin.ignore();
     getline(cin, temp1);
@@ -218,7 +215,7 @@ void deleteData()
     int mid = binarySearch(arr, 0, size - 1, temp1);
     if (mid >= 0)
     {
-        fs3 << arr[mid].value << endl;
+        fs3 << arr[mid].Value << endl;
         swap(arr[mid], arr[size - 1]);
         size--;
         saveFileArray(arr, size);
@@ -239,25 +236,25 @@ void editData()
     int size;
     string temp1;
     string temp2;
-    fstream fs1("keys.txt", ios::in);
+    fstream fs1("Keys.txt", ios::in);
     size = sizeFileInput(fs1);
     fs1.close();
     info *arrTemp = new info[size];
     arrTemp = inputArr(arrTemp, size);
     arrTemp = insertionSort(arrTemp, size);
-    cout << " Enter keys: ";
+    cout << " Enter Keys: ";
     cin.ignore();
     cin >> temp1;
     fs3 << temp1 << " : " << endl;
     int mid = binarySearch(arrTemp, 0, size - 1, temp1);
     if (mid >= 0)
     {
-        fs3 << " prev value: " << arrTemp[mid].value << endl;
-        cout << "Enter value: ";
+        fs3 << " prev Value: " << arrTemp[mid].Value << endl;
+        cout << "Enter Value: ";
         cin.ignore();
         getline(cin, temp2);
-        fs3 << " New value: " << temp2 << endl;
-        arrTemp[mid].value = temp2;
+        fs3 << " New Value: " << temp2 << endl;
+        arrTemp[mid].Value = temp2;
         saveFileArray(arrTemp, size);
     }
     else
@@ -273,7 +270,7 @@ void process(int seletc)
     int size;
     if (seletc == 1)
     {
-        fstream fsTemp("keys.txt", ios::in);
+        fstream fsTemp("Keys.txt", ios::in);
         size = sizeFileInput(fsTemp);
         fsTemp.close();
         info *arr = new info[size];
@@ -296,7 +293,7 @@ void process(int seletc)
     }
     if (seletc != 1)
     {
-        fstream fsFinals("keys.txt", ios::in);
+        fstream fsFinals("Keys.txt", ios::in);
         size = sizeFileInput(fsFinals);
         fsFinals.close();
         info *arrFinal = new info[size];
@@ -349,7 +346,7 @@ int hashKeys(string str)
 void addNode(hashtable &H, info table)
 {
     node *p = new node{table, NULL};
-    int num = hashKeys(table.keys);
+    int num = hashKeys(table.Keys);
     if (H[num] == NULL)
     {
         H[num] = p;
@@ -372,7 +369,7 @@ node *find_node(hashtable &H, string temp)
     start = clock();
     int num = hashKeys(temp);
     node *p = H[num];
-    while (p != NULL && p->table.keys != temp)
+    while (p != NULL && p->table.Keys != temp)
     {
         p = p->next;
     }
@@ -396,8 +393,8 @@ void loadFile(hashtable &H)
     fsTime << "loadFile ";
     clock_t start, end;
     start = clock();
-    fstream fs1("keys.txt", ios::in);
-    fstream fs2("value.txt", ios::in);
+    fstream fs1("Keys.txt", ios::in);
+    fstream fs2("Value.txt", ios::in);
     while (!fs1.eof())
     {
         string temp1;
@@ -420,7 +417,7 @@ void searchHash(hashtable &H)
     fsH << "ADD Data" << endl;
     node *find;
     string temp;
-    cout << "Enter keys: ";
+    cout << "Enter Keys: ";
     cin.ignore();
     getline(cin, temp);
     find = find_node(H, temp);
@@ -432,8 +429,8 @@ void searchHash(hashtable &H)
     }
     else
     {
-        cout << find->table.value << endl;
-        fsH << temp << " : " << find->table.value << endl;
+        cout << find->table.Value << endl;
+        fsH << temp << " : " << find->table.Value << endl;
     }
     fsH.close();
 }
@@ -444,13 +441,13 @@ void addDataHash(hashtable &H)
     info table;
     string temp1;
     string temp2;
-    cout << "Enter keys: ";
+    cout << "Enter Keys: ";
     cin.ignore();
     getline(cin, temp1);
     cout << "Enter value: ";
     getline(cin, temp2);
-    table.keys = temp1;
-    table.value = temp2;
+    table.Keys = temp1;
+    table.Value = temp2;
     fs3 << temp1 << " : " << temp2 << endl;
     addNode(H, table);
 }
@@ -460,7 +457,7 @@ void deleteDataHash(hashtable &H)
     fs3 << " Deleted Data " << endl;
     node *deleteData;
     string temp1;
-    cout << "Enter keys: ";
+    cout << "Enter Keys: ";
     cin.ignore();
     getline(cin, temp1);
     int index = hashKeys(temp1);
@@ -488,7 +485,7 @@ void editDataHash(hashtable &H)
     fs3 << " EDIT Data" << endl;
     node *editDataHash;
     string temp1;
-    cout << "Enter keys: ";
+    cout << "Enter Keys: ";
     cin.ignore();
     getline(cin, temp1);
     fs3 << temp1 << " : " << endl;
@@ -501,31 +498,31 @@ void editDataHash(hashtable &H)
     }
     else
     {
-        cout << "Enter value: ";
+        cout << "Enter Value: ";
         string temp2;
         getline(cin, temp2);
-        fs3 << " prev value: " << editDataHash->table.value << endl;
-        editDataHash->table.value = temp2;
-        fs3 << " New value: " << temp2 << endl;
+        fs3 << " prev Value: " << editDataHash->table.Value << endl;
+        editDataHash->table.Value = temp2;
+        fs3 << " New Value: " << temp2 << endl;
     }
 }
 void saveDataHash(hashtable &H)
 {
-    ofstream ofs1("keys.txt", std::ofstream::out);
+    ofstream ofs1("Keys.txt", std::ofstream::out);
     ofs1.close();
-    ofstream ofs2("value.txt", std::ofstream::out);
+    ofstream ofs2("Value.txt", std::ofstream::out);
     ofs2.close();
-    fstream fs1("keys.txt", ios::out);
-    fstream fs2("value.txt", ios::out);
+    fstream fs1("Keys.txt", ios::out);
+    fstream fs2("Value.txt", ios::out);
     for (int i = 0; i < sizeTable; i++)
     {
         node *temp = H[i];
         while (temp != NULL)
         {
-            if (temp->table.keys.length() > 1)
+            if (temp->table.Keys.length() > 1)
             {
-                fs1 << temp->table.keys << endl;
-                fs2 << temp->table.value << endl;
+                fs1 << temp->table.Keys << endl;
+                fs2 << temp->table.Value << endl;
             }
             temp = temp->next;
         }
@@ -572,11 +569,11 @@ struct Node
 
 typedef Node *Tree;
 
-Node *CreateNode(string keys, string value)
+Node *CreateNode(string Keys, string value)
 {
     Node *p = new Node;
-    p->Data.keys = keys;
-    p->Data.value = value;
+    p->Data.Keys = Keys;
+    p->Data.Value = value;
     p->left = NULL;
     p->right = NULL;
     return p;
@@ -601,7 +598,7 @@ void AddNode(Tree &root, Node *node)
 {
     if (root)
     {
-        if (node->Data.keys <= root->Data.keys)
+        if (node->Data.Keys <= root->Data.Keys)
         {
             AddNode(root->left, node);
         }
@@ -616,19 +613,19 @@ void AddNode(Tree &root, Node *node)
     }
 }
 
-Node *FindNode(Tree root, string keys)
+Node *FindNode(Tree root, string Keys)
 {
     if (root)
     {
-        if (root->Data.keys == keys)
+        if (root->Data.Keys == Keys)
         {
             return root;
         }
-        if (keys < root->Data.keys)
+        if (Keys < root->Data.Keys)
         {
-            return FindNode(root->left, keys);
+            return FindNode(root->left, Keys);
         }
-        return FindNode(root->right, keys);
+        return FindNode(root->right, Keys);
     }
     return NULL;
 }
@@ -641,8 +638,8 @@ void saveDataTree(Tree root, fstream &fs1, fstream &fs2)
     }
     saveDataTree(root->left, fs1, fs2);
 
-    fs1 << root->Data.keys << endl;
-    fs2 << root->Data.value << endl;
+    fs1 << root->Data.Keys << endl;
+    fs2 << root->Data.Value << endl;
 
     saveDataTree(root->right, fs1, fs2);
 }
@@ -652,7 +649,7 @@ void FindAndReplace(Tree &p, Tree &tree)
         FindAndReplace(p, tree->left);
     else
     {
-        p->Data.keys = tree->Data.keys;
+        p->Data.Keys = tree->Data.Keys;
         p = tree;
         tree = tree->right;
     }
@@ -662,11 +659,11 @@ void DeleteNode(Tree &root, string x)
 {
     if (root)
     {
-        if (x > root->Data.keys)
+        if (x > root->Data.Keys)
         {
             DeleteNode(root->right, x);
         }
-        else if (x < root->Data.keys)
+        else if (x < root->Data.Keys)
         {
             DeleteNode(root->left, x);
         }
@@ -724,27 +721,27 @@ void processTree(Tree t, int seletc)
         }
         else
         {
-            fsH << find->Data.value << endl;
+            fsH << find->Data.Value << endl;
             cout << endl
-                 << find->Data.keys << " : " << find->Data.value << endl;
+                 << find->Data.Keys << " : " << find->Data.Value << endl;
         }
     }
     else if (seletc == 2)
     {
-        string keys;
+        string Keys;
         string value;
         fsH << "Add : ";
-        cout << "Enter keys:";
+        cout << "Enter Keys:";
         cin.ignore();
-        cin >> keys;
-        fsH << keys << " : ";
+        cin >> Keys;
+        fsH << Keys << " : ";
         cout << endl
              << " Enter value: ";
         cin.ignore();
         getline(cin, value);
         fsH << value << endl;
         start = clock();
-        AddNode(t, CreateNode(keys, value));
+        AddNode(t, CreateNode(Keys, value));
         end = clock();
         duration = (double)(end - start);
         fsTime << "Add: "
@@ -754,7 +751,7 @@ void processTree(Tree t, int seletc)
     {
         fsH << "Edit : ";
         cout << endl
-             << "Enter keys delete ";
+             << "Enter Keys delete ";
         cin >> temps;
         fsH << temps << endl;
         start = clock();
@@ -783,15 +780,15 @@ void processTree(Tree t, int seletc)
         {
 
             cout << endl
-                 << " prev Data : " << find->Data.value << endl;
+                 << " prev Data : " << find->Data.Value << endl;
             fsH << endl
-                << " prev Data : " << find->Data.value << endl;
-            string value;
+                << " prev Data : " << find->Data.Value << endl;
+            string Value;
             cout << "Enter new Data ";
             cin.ignore();
-            getline(cin, value);
-            fsH << "New value: " << value << endl;
-            find->Data.value = value;
+            getline(cin, Value);
+            fsH << "New Value: " << Value << endl;
+            find->Data.Value = Value;
         }
         end = clock();
         duration = (double)(end - start);
@@ -804,17 +801,17 @@ void processTree(Tree t, int seletc)
 void selectionTree(Tree t)
 {
 
-    fstream fsKeys("keys.txt", ios::in);
-    fstream fsValue("value.txt", ios::in);
+    fstream fsKeys("Keys.txt", ios::in);
+    fstream fsValue("Value.txt", ios::in);
     int count = 0;
 
     while (!fsKeys.eof())
     {
-        string keys;
-        string value;
-        getline(fsKeys, keys);
-        getline(fsValue, value);
-        AddNode(t, CreateNode(keys, value));
+        string Keys;
+        string Value;
+        getline(fsKeys, Keys);
+        getline(fsValue, Value);
+        AddNode(t, CreateNode(Keys, Value));
     }
 
     fsKeys.close();
@@ -829,27 +826,30 @@ void selectionTree(Tree t)
     cin >> seletc;
     processTree(t, seletc);
     cout << "Save File" << endl;
-    ofstream ofs1("keys.txt", std::ofstream::out);
+    ofstream ofs1("Keys.txt", std::ofstream::out);
     ofs1.close();
-    ofstream ofs2("value.txt", std::ofstream::out);
+    ofstream ofs2("Value.txt", std::ofstream::out);
     ofs2.close();
-    fstream fs1("keys.txt", ios::out);
-    fstream fs2("value.txt", ios::out);
+    fstream fs1("Keys.txt", ios::out);
+    fstream fs2("Value.txt", ios::out);
     saveDataTree(t, fs1, fs2);
     fs1.close();
     fs2.close();
 }
+
 int height(Node *N)
 {
     if (N == NULL)
         return 0;
     return N->height;
 }
-int findMax(int a, int b)
+
+int max(int a, int b)
 {
     return (a > b) ? a : b;
 }
-Node *createNode(info Data)
+
+Node *createNodeAvl(info Data)
 {
     Node *p = new Node;
     p->Data = Data;
@@ -858,17 +858,18 @@ Node *createNode(info Data)
     p->height = 1;
     return p;
 }
+
 Node *rightRotate(Node *N)
 {
     Node *Nl = N->left;
     Node *Nlr = Nl->right;
-
     Nl->right = N;
     N->left = Nlr;
-    N->height = findMax(height(N->left), height(N->right)) + 1;
-    Nl->height = findMax(height(Nl->left), height(Nl->right)) + 1;
+    N->height = max(height(N->left), height(N->right)) + 1;
+    Nl->height = max(height(Nl->left), height(Nl->right)) + 1;
     return Nl;
 }
+
 Node *leftRotate(Node *N)
 {
     Node *Nr = N->right;
@@ -877,11 +878,12 @@ Node *leftRotate(Node *N)
     Nr->left = N;
     N->right = Nrl;
 
-    N->height = findMax(height(N->left), height(N->right)) + 1;
-    Nr->height = findMax(height(Nr->left), height(Nr->right)) + 1;
+    N->height = max(height(N->left), height(N->right)) + 1;
+    Nr->height = max(height(Nr->left), height(Nr->right)) + 1;
 
     return Nr;
 }
+
 int getBalance(Node *N)
 {
     if (N == NULL)
@@ -889,35 +891,35 @@ int getBalance(Node *N)
     return (height(N->left) - height(N->right));
 }
 
-Node *insertNodeTree(Node *N, info Data)
+Node *insertNode(Node *N, info Data)
 {
     if (N == NULL)
-        return createNode(Data);
+        return createNodeAvl(Data);
 
-    if (Data.keys < N->Data.keys)
-        N->left = insertNodeTree(N->left, Data);
-    else if (Data.keys > N->Data.keys)
-        N->right = insertNodeTree(N->right, Data);
+    if (Data.Keys < N->Data.Keys)
+        N->left = insertNode(N->left, Data);
+    else if (Data.Keys > N->Data.Keys)
+        N->right = insertNode(N->right, Data);
     else
         return N;
 
-    N->height = findMax(height(N->left), height(N->right)) + 1;
+    N->height = max(height(N->left), height(N->right)) + 1;
 
     int balance = getBalance(N);
 
     // LL & RR
-    if (balance > 1 && Data.keys < N->Data.keys)
+    if (balance > 1 && Data.Keys < N->Data.Keys)
         return rightRotate(N);
-    if (balance < -1 && Data.keys > N->Data.keys)
+    if (balance < -1 && Data.Keys > N->Data.Keys)
         return leftRotate(N);
 
     // LR & RL
-    if (balance > 1 && Data.keys > N->Data.keys)
+    if (balance > 1 && Data.Keys > N->Data.Keys)
     {
         N->left = leftRotate(N->left);
         return rightRotate(N);
     }
-    if (balance < -1 && Data.keys < N->Data.keys)
+    if (balance < -1 && Data.Keys < N->Data.Keys)
     {
         N->right = rightRotate(N->right);
         return leftRotate(N);
@@ -929,15 +931,15 @@ void addKeys(Node *N)
 {
     string key;
     string value;
-    cout << "Enter new keys:";
+    cout << "Enter new Keys:";
     cin >> key;
-    cout << "Enter new value:";
+    cout << "Enter new Value:";
     cin.ignore();
     getline(cin, value);
     info Data;
-    Data.keys = key;
-    Data.value = value;
-    N = insertNodeTree(N, Data);
+    Data.Keys = key;
+    Data.Value = value;
+    N = insertNode(N, Data);
 }
 Node *minValueNode(Node *N)
 {
@@ -952,9 +954,9 @@ Node *deleteNode(Node *N, string s)
     if (N == NULL)
         return N;
 
-    if (s < N->Data.keys)
+    if (s < N->Data.Keys)
         N->left = deleteNode(N->left, s);
-    else if (s > N->Data.keys)
+    else if (s > N->Data.Keys)
         N->right = deleteNode(N->right, s);
     else
     {
@@ -974,14 +976,14 @@ Node *deleteNode(Node *N, string s)
         {
             Node *p = minValueNode(N->right);
             N->Data = p->Data;
-            N->right = deleteNode(N->right, p->Data.keys);
+            N->right = deleteNode(N->right, p->Data.Keys);
         }
     }
 
     if (N == NULL)
         return N;
 
-    N->height = findMax(height(N->left), height(N->right)) + 1;
+    N->height = max(height(N->left), height(N->right)) + 1;
 
     int balance = getBalance(N);
 
@@ -1003,33 +1005,16 @@ Node *deleteNode(Node *N, string s)
 
     return N;
 }
-
-void processingUsage(info *D, int &size)
-{
-    for (int i = 0; i < size; ++i)
-    {
-        if (D[i].keys == "Usage")
-        {
-            if (D[i].value[0] != 'n' || D[i].value[1] != '.')
-            {
-                D[i - 1].value += " " + D[i].keys + ": " + D[i].value;
-                D[i].keys = D[size - 1].keys;
-                D[i].value = D[size - 1].value;
-                --size;
-            }
-        }
-    }
-}
 void rightBalance(info *D, int &size)
 {
     for (int i = 0; i < size; ++i)
     {
         for (int j = i + 1; j < size; ++j)
         {
-            if (D[j].value == D[i].value)
+            if (D[j].Value == D[i].Value)
             {
-                D[j].keys = D[size - 1].keys;
-                D[j].value = D[size - 1].value;
+                D[j].Keys = D[size - 1].Keys;
+                D[j].Value = D[size - 1].Value;
                 --size;
                 break;
             }
@@ -1041,16 +1026,16 @@ void quickSort(info *D, int l, int r)
     if (l > r)
         return;
 
-    string s = D[(l + r) / 2].keys;
+    string s = D[(l + r) / 2].Keys;
 
     int i = l;
     int j = r;
 
     while (i <= j)
     {
-        while (D[i].keys < s)
+        while (D[i].Keys < s)
             ++i;
-        while (D[j].keys > s)
+        while (D[j].Keys > s)
             --j;
 
         if (i <= j)
@@ -1066,51 +1051,42 @@ void quickSort(info *D, int l, int r)
     if (r > i)
         quickSort(D, i, r);
 }
-// int sizeFileInput(fstream &fsInFile)
-// {
-//     int size = 0;
-//     while (!fsInFile.eof())
-//     {
-//         string temp;
-//         getline(fsInFile, temp);
-//         if (temp.length() > 1)
-//         {
-//             size++;
-//         }
-//     }
-//     return size;
-// }
 void load(Node *&N)
 {
-    cout << "Load Data ... " << endl;
-
+    fstream fsTime("Time.txt", ios::out | ios::app);
+    clock_t start, end;
+    double duration;
+    start = clock();
     string s;
-    fstream fsInFile("keys.txt", ios::in);
+    fstream fsInFile("Keys.txt", ios::in);
     int size = sizeFileInput(fsInFile);
     fsInFile.close();
     info *Data = new info[size];
     int count = 0;
-    fstream fsKeys("keys.txt", ios::in);
-    fstream fsValue("value.txt", ios::in);
-    while (!fsKeys.eof())
+    fstream fs1("Keys.txt", ios::in);
+    fstream fs2("Value.txt", ios::in);
+    while (!fs1.eof())
     {
         string keys;
-        string value;
-        getline(fsKeys, keys);
-        getline(fsValue, value);
-        Data[count].keys = keys;
-        Data[count].value = value;
+        string values;
+        getline(fs1, keys);
+        getline(fs2, values);
+        Data[count].Keys = keys;
+        Data[count].Value = values;
         count++;
     }
-    fsKeys.close();
-    fsValue.close();
+    count = count - 1;
     rightBalance(Data, count);
-    for (int i = 0; i < count; ++i)
+    for (int i = 0; i <= count; i++)
     {
-        N = insertNodeTree(N, Data[i]);
+        N = insertNode(N, Data[i]);
     }
 
     delete[] Data;
+    fsTime << "Load : ";
+    end = clock();
+    duration = (double)(end - start);
+    fsTime << " Time total:" << duration << "ms" << endl;
 }
 
 Node *find(Node *N, string s)
@@ -1118,90 +1094,150 @@ Node *find(Node *N, string s)
     if (N == NULL)
         return NULL;
 
-    if (N->Data.keys == s)
+    if (N->Data.Keys == s)
         return N;
 
-    if (N->Data.keys > s)
+    if (N->Data.Keys > s)
         return find(N->left, s);
     return find(N->right, s);
 }
 void search(Node *N)
 {
+    fstream fsH("History.txt", ios::out | ios::app);
+    fstream fsTime("Time.txt", ios::out | ios::app);
     string key;
-
-    cout << "Enter a keys to translate value: ";
+    fsH << "SEARCH: " << endl;
+    fsTime << "SEARCH: ";
+    cout << "Enter a Keys to translate Value: ";
+    cin.ignore();
     getline(cin, key);
-    if (key[0] >= 'a' && key[0] <= 'z')
-        key[0] -= 32;
-
+    clock_t start, end;
+    double duration;
+    start = clock();
     Node *p = find(N, key);
     if (p != NULL)
-        cout << p->Data.keys + ": " + p->Data.value + "\n";
+    {
+        cout << p->Data.Keys + ": " + p->Data.Value + "\n";
+        fsH << p->Data.Keys + ": " + p->Data.Value + "\n";
+    }
     else
-        cout << "Can't find the keys.\n";
+    {
+        cout << "Can't find the Keys.\n";
+        fsH << key << " : Can't find the Keys.\n";
+    }
+    end = clock();
+    duration = (double)(end - start);
+    fsTime << " Time total:" << duration << "ms" << endl;
 }
 
 void addNewKeys(Node *N)
 {
+    fstream fsH("History.txt", ios::out | ios::app);
+    fstream fsTime("Time.txt", ios::out | ios::app);
+    fsH << "Add: " << endl;
+    fsTime << "Add: ";
     info D;
-
-    cout << "Enter the keys for adding: ";
-    getline(cin, D.keys);
-    if (D.keys[0] >= 'a' && D.keys[0] <= 'z')
-        D.keys[0] -= 32;
-    cout << "Enter the value of word: ";
-    getline(cin, D.value);
-
-    N = insertNodeTree(N, D);
+    cout << "Enter the Keys for adding: ";
+    cin.ignore();
+    getline(cin, D.Keys);
+    cout << "Enter the Value of word: ";
+    getline(cin, D.Value);
+    fsH << "key: " << endl;
+    clock_t start, end;
+    double duration;
+    start = clock();
+    N = insertNode(N, D);
+    end = clock();
+    duration = (double)(end - start);
+    fsTime << " Time total:" << duration << "ms" << endl;
     cout << "Successfully added...\n";
 }
 void delAWord(Node *N)
 {
+    fstream fsH("History.txt", ios::out | ios::app);
+    fstream fsTime("Time.txt", ios::out | ios::app);
+    fsH << "Delete: " << endl;
+    fsTime << "Delete: ";
     string key;
     cout << "Enter a word to delete: ";
+    cin.ignore();
     getline(cin, key);
+    fsH << key;
+    clock_t start, end;
+    double duration;
+    start = clock();
     N = deleteNode(N, key);
+    end = clock();
+    duration = (double)(end - start);
+    fsTime << " Time total:" << duration << "ms" << endl;
     if (N == NULL)
     {
         cout << "Can't find the word.\n";
+        fsH << "Can't find the word.\n";
         return;
+    }
+    else
+    {
+        fsH << "Done" << endl;
     }
     cout << "Successfully deleted...\n";
 }
-void editvalue(Node *N)
+void editValue(Node *N)
 {
+    fstream fsH("History.txt", ios::out | ios::app);
+    fstream fsTime("Time.txt", ios::out | ios::app);
+    fsH << "Edit: " << endl;
+    fsTime << "Edit: ";
     string key;
     Node *result;
-    cout << "Enter a word to edit value: ";
+    cout << "Enter a word to edit Value: ";
+    cin.ignore();
     getline(cin, key);
-    if (key[0] >= 'a' && key[0] <= 'z')
-        key[0] -= 32;
+    fsH << key << " : ";
+    clock_t start, end;
+    double duration;
+    start = clock();
     result = find(N, key);
+    end = clock();
+    duration = (double)(end - start);
+    fsTime << " Time total:" << duration << "ms" << endl;
     if (result == NULL)
+    {
         cout << "Can't find the word.\n";
+        fsH << "Can't find the word.\n";
+    }
     else
     {
-        cout << result->Data.keys + ": " + result->Data.value + '\n';
-        cout << "Enter new value for editing: ";
+        cout << result->Data.Keys + ": " + result->Data.Value + '\n';
+        fsH << result->Data.Value << endl;
+        cout << "Enter new Value for editing: ";
+        fsH << "New Value for editing: ";
         getline(cin, key);
-        result->Data.value = key;
-        cout << result->Data.keys + ": " + result->Data.value + "\n";
+        fsH << key << endl;
+        result->Data.Value = key;
+        cout << result->Data.Keys + ": " + result->Data.Value + "\n";
     }
 }
-void outputTree(Node *N, fstream &fsKeys, fstream &fsValue)
+void outputTree(Node *N, fstream &fs1, fstream &fs2)
 {
     if (N == NULL)
         return;
-    outputTree(N->left, fsKeys, fsValue);
-    fsKeys << N->Data.keys << endl;
-    fsValue << N->Data.value << endl;
-    outputTree(N->right, fsKeys, fsValue);
+    outputTree(N->left, fs1, fs2);
+    fs1 << N->Data.Keys << endl;
+    fs2 << N->Data.Value << endl;
+    outputTree(N->right, fs1, fs2);
 }
 void save(Node *N)
 {
-    fstream fsKeys("keys.txt", ios::out);
-    fstream fsValue("keys.txt", ios::out);
-    outputTree(N, fsKeys, fsValue);
+    ofstream ofs1("Keys.txt", std::ofstream::out);
+    ofs1.close();
+    ofstream ofs2("Value.txt", std::ofstream::out);
+    ofs2.close();
+    fstream fs1;
+    fs1.open("Keys.txt", ios::out | ios::app);
+    fstream fs2;
+    fs2.open("Value.txt", ios::out | ios::app);
+    outputTree(N, fs1, fs2);
 }
 void selectionAvl(Node *N)
 {
@@ -1209,51 +1245,52 @@ void selectionAvl(Node *N)
     int temp = 5;
     bool flag = true;
 
-    while (temp > 0)
+    cout << " AvlTree " << endl;
+    cout << "1. SEARCH" << endl;
+    cout << "2. ADD Data" << endl;
+    cout << "3. DELETE Data" << endl;
+    cout << "4. EDIT Data" << endl;
+    cout << " Choose your choice : ";
+    cin >> temp;
+    cout << endl;
+    if (temp == 1)
     {
-        cout << " AVL tree" << endl;
-        cout << "1. SEARCH" << endl;
-        cout << "2. ADD Data" << endl;
-        cout << "3. DELETE Data" << endl;
-        cout << "4. EDIT Data" << endl;
-        cout << "5. EXIT " << endl;
-        cout << " Choose your choice : ";
-        cin >> temp;
-        cin.ignore();
-        cout << endl;
-        if (temp == 0)
-        {
-            break;
-        }
-        else if (temp == 1)
-        {
-            search(N);
-        }
-        else if (temp == 2)
-        {
-            addKeys(N);
-        }
-        else if (temp == 3)
-        {
-            delAWord(N);
-        }
-        else if (temp == 4)
-        {
-            editvalue(N);
-        }
-
-        system("pause");
+        search(N);
     }
+    else if (temp == 2)
+    {
+        addNewKeys(N);
+    }
+    else if (temp == 3)
+    {
+        delAWord(N);
+    }
+    else if (temp == 4)
+    {
+        editValue(N);
+    }
+    fstream fsTime("Time.txt", ios::out | ios::app);
+    fsTime << "save: ";
+    clock_t start, end;
+    double duration;
+    start = clock();
+    save(N);
+    end = clock();
+    duration = (double)(end - start);
+    fsTime << " Time total:" << duration << "ms" << endl;
+    system("pause");
 }
-void AVLTree()
+
+int avlTree()
 {
     Node *N = NULL;
+    cout << "Loading..." << endl;
     selectionAvl(N);
+
+    return 0;
 }
 int main()
 {
-    system("color 80");
-    cout << "RUN..." << endl;
     srand(time(NULL));
     int Select = 0;
     fstream fsInFile("Oxford English Dictionary.txt", ios::in);
@@ -1267,10 +1304,10 @@ int main()
         cout << "LAB5_20127185_Nguyen Gia Huy" << endl;
         cout << "1. Run with array" << endl;
         cout << "2. Run with  Hash Table " << endl;
-        cout << "3. Run with  Tree " << endl;
-        cout << "4. Run with AVLTree        " << endl;
-        cout << "5. Show History        " << endl;
-        cout << "6.   EXIT     " << endl;
+        cout << "3. Run with  Binary Tree " << endl;
+        cout << "4. Run with avlTree " << endl;
+        cout << "5.    Show History        " << endl;
+        cout << "6.       EXIT        " << endl;
         cout << " Enter your choice: ";
         cin >> Select;
         if (Select == 1)
@@ -1304,7 +1341,9 @@ int main()
         }
         else if (Select == 4)
         {
-            AVLTree();
+            fsH << "Run with AVL tree" << endl;
+            fsTime << "Run with AVL tree" << endl;
+            avlTree();
         }
         else if (Select == 5)
         {
@@ -1316,10 +1355,6 @@ int main()
                 cout << temp << endl;
             }
             system("pause");
-        }
-        else
-        {
-            Beep(523, 1000);
         }
         fsTime.close();
         fsH.close();

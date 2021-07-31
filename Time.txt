@@ -1,1 +1,47 @@
+Run with AVL tree
+Load :  Time total:7259ms
+SEARCH:  Time total:1ms
+save:  Time total:1606ms
+Run with AVL tree
+Load :  Time total:4650ms
+save:  Time total:1556ms
+Run with AVL tree
+Load :  Time total:4165ms
+Edit:  Time total:0ms
+save:  Time total:1217ms
+Run with AVL tree
+Load :  Time total:3774ms
+Delete:  Time total:0ms
+save:  Time total:1416ms
 Run with array
+Sort array:  Time total:10ms
+binarySearch  Time total:0ms
+Run with array
+Sort array:  Time total:12ms
+Run with AVL tree
+Load :  Time total:5061ms
+save:  Time total:1427ms
+Run with AVL tree
+Load :  Time total:5327ms
+save:  Time total:1462ms
+Run with array
+Sort array:  Time total:9ms
+Run with AVL tree
+Load :  Time total:5116ms
+Delete:  Time total:0ms
+save:  Time total:1241ms
+Run with Binary tree
+Search: Time total:1ms
+Run with AVL tree
+Load :  Time total:4191ms
+save:  Time total:1443ms
+Run with AVL tree
+Load :  Time total:4195ms
+Add:  Time total:0ms
+save:  Time total:1105ms
+Run with Hash Table
+loadFile  Time total:76ms
+find_node  Time total:0ms
+Run with array
+Sort array:  Time total:17084ms
+binarySearch  Time total:0ms
